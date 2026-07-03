@@ -1,0 +1,26 @@
+{
+  "expo": {
+    "name": "Agri Logistics",
+    "slug": "agri-logistics",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "automatic",
+    "android": {
+      "package": "com.yourcompany.agrilogistics",
+      "googleServicesFile": "./google-services.json",
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#1B4332"
+      }
+    },
+    "plugins": [
+      "@react-native-firebase/app"
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "59de4d1d-280e-4e6b-91fa-b44fa0aaa367"
+      }
+    }
+  }
+}

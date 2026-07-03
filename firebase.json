@@ -1,0 +1,16 @@
+{
+  "firestore": {
+    "rules": "firestore.rules",
+    "indexes": "firestore.indexes.json"
+  },
+  "functions": [
+    {
+      "source": "functions",
+      "codebase": "default",
+      "ignore": ["node_modules", ".git", "firebase-debug.log", "firebase-debug.*.log"]
+    }
+  ]
+}
+
+
+{"assignedAt": {"nanoseconds": 544000000, "seconds": 1783059098}, "boxCount": null, "createdBy": "transport_owner", "driver": {"name": "Driver", "phone": "+919494455495", "uid": "rnuK2VmCExW9ppl8S3ckNBoyN5U2"}, "farmers": [{"address": "", "name": "Murali Kollati", "phone": "+919494455494", "uid": "HFuT5VZQGpfqzT5HdbdfNZBfzj32"}], "id": "rJzOeRd6aiQ4ZWTGCo8O", "pickedUpAt": null, "pin": null, "pinAttempts": 0, "pinLockedUntil": null, "pinVerifiedBy": null, "requestedAt": {"nanoseconds": 544000000, "seconds": 1783059098}, "shopAllocations": [], "status": "assigned", "transportOwnerId": "DgA2tsBE3ufy7x6lfcMej12kS1e2", "vehicleNumber": "AP162343"}

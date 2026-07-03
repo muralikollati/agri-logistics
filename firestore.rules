@@ -1,0 +1,60 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function getRole() {
+      return exists(/databases/$(database)/documents/users/$(request.auth.uid))
+        ? get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role
+        : 'none';
+    }
+
+    function isOwnerOfShipment(shipmentData) {
+      return request.auth.uid == shipmentData.transportOwnerId
+          || (shipmentData.driver != null && request.auth.uid == shipmentData.driver.uid);
+    }
+
+    match /shipments/{shipmentId} {
+      // Farmer, Transport Owner, Driver see the full document
+      allow read: if isOwnerOfShipment(resource.data) || getRole() == 'farmer';
+
+      // Shop Owner can read if their UID is in the shopOwnerIds array
+      allow read: if getRole() == 'shop_owner' &&
+        resource.data.shopOwnerIds.hasAny([request.auth.uid]);
+
+      // Sangam can read shipments that are in transit, unloading, unloaded, or completed
+      allow read: if getRole() == 'sangam' && (resource.data.status in ['picked_up', 'unloading', 'unloaded', 'completed']);
+
+      allow create: if getRole() in ['farmer', 'transport_owner'];
+      allow update: if isOwnerOfShipment(resource.data)
+                    || (getRole() == 'shop_owner' && resource.data.shopOwnerIds.hasAny([request.auth.uid]));
+      allow delete: if getRole() == 'transport_owner'
+                    && resource.data.status in ['requested', 'assigned']
+                    && isOwnerOfShipment(resource.data);
+    }
+
+    match /shipments/{shipmentId}/unloadEntries/{entryId} {
+      allow read: if isOwnerOfShipment(get(/databases/$(database)/documents/shipments/$(shipmentId)).data)
+                  || getRole() == 'sangam'
+                  || (getRole() == 'shop_owner' && get(/databases/$(database)/documents/shipments/$(shipmentId)).data.shopOwnerIds.hasAny([request.auth.uid]));
+      allow create: if getRole() == 'sangam';
+    }
+
+    match /shipments/{shipmentId}/discrepancies/{ticketId} {
+      allow read: if getRole() in ['sangam', 'driver', 'transport_owner', 'shop_owner'];
+      allow create: if getRole() == 'shop_owner';
+      allow update: if getRole() in ['sangam', 'transport_owner'];
+    }
+
+    match /shipments/{shipmentId}/sales/{saleId} {
+      allow read: if getRole() in ['farmer', 'transport_owner', 'shop_owner'];
+      allow create, update: if getRole() == 'shop_owner';
+    }
+
+    match /users/{userId} {
+      allow read: if request.auth.uid == userId 
+                  || getRole() == 'transport_owner'
+                  || (request.auth.uid != null && resource.data.role == 'shop_owner');
+      allow write: if request.auth.uid == userId || getRole() in ['transport_owner', 'driver'];
+    }
+  }
+}

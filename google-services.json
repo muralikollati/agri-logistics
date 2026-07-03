@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "163943163192",
+    "project_id": "agri-logistics-f4c55",
+    "storage_bucket": "agri-logistics-f4c55.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:163943163192:android:fa1be6447408a43170cdcd",
+        "android_client_info": {
+          "package_name": "com.atoz.agrilogistics"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAX4DOoPnIHMEHeM4sEOkUWVmbMFmiOMFI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
